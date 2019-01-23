@@ -1,0 +1,26 @@
+{
+  "name": "nfdumpcsv-clean",
+  "version": "1.0.0",
+  "description": "Takes a nfdump csv and removes unnecessary columns and converts others to more database ingestible formats",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karmicoder/nfdumpcsv-clean.git"
+  },
+  "author": "Michael O'Sullivan <mosullivan.8@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/karmicoder/nfdumpcsv-clean/issues"
+  },
+  "homepage": "https://github.com/karmicoder/nfdumpcsv-clean#readme",
+  "dependencies": {
+    "base64-js": "^1.3.0",
+    "csv-parse": "^4.3.1",
+    "ipaddr": "0.0.9",
+    "ipaddr.js": "^1.8.1",
+    "yargs": "^12.0.5"
+  }
+}
