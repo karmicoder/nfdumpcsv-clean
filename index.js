@@ -1,4 +1,7 @@
-const argv = require('yargs').argv;
+const argv = require('yargs')
+  .alias('f', 'file')
+  .boolean('noOutput')
+  .argv;
 const base64 = require('base64-js');
 const fs = require('fs');
 const ipaddr = require('ipaddr.js');
@@ -33,17 +36,19 @@ parser.on('readable', function() {
         record[cols.START_TIME],
         record[cols.END_TIME],
         record[cols.DUR],
-        toHexString(ipaddr.parse(record[cols.SRC_ADDR]).toByteArray()),
+        binToStr(ipToBin(record[cols.SRC_ADDR])),
         record[cols.SRC_PORT],
-        toHexString(ipaddr.parse(record[cols.DST_ADDR]).toByteArray()),
+        binToStr(ipToBin(record[cols.DST_ADDR])),
         record[cols.DST_PORT],
-        protocolsArr.indexOf(record[cols.PROTOCOL]),
+        Math.max(0, protocolsArr.indexOf(record[cols.PROTOCOL])),
         record[cols.PACKETS_IN],
         record[cols.BYTES_IN],
         record[cols.PACKETS_OUT],
         record[cols.BYTES_OUT]
       ];
-      console.log(output.map((str) => csvEscape(str)).join(','));
+      if (!argv.noOutput) {
+        console.log(output.map((str) => csvEscape(str)).join(','));
+      }
     } catch (err) {
       console.error('failed to parse record [' + rowNum + ']', err);
     } finally {
@@ -55,8 +60,8 @@ parser.on('error', function(err) {
   console.error(err.message);
 });
 
-if (argv._.length > 0) {
-  let inFile = fs.createReadStream(argv._[0]);
+if (argv.f) {
+  let inFile = fs.createReadStream(argv.f);
   inFile.pipe(parser);
 } else {
   process.stdin.pipe(parser);
@@ -74,8 +79,21 @@ function csvEscape(str) {
   }
   return str;
 }
-function toHexString(byteArray) {
-  return '0x' + Array.from(byteArray, function(byte) {
-    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-  }).join('')
+function binToStr(byteArray) {
+  return '[' + byteArray.join(',') + ']';
+}
+
+function ipToBin(ip) {
+  let addr = ipaddr.parse(ip);
+  switch (addr.kind()) {
+    case 'ipv4':
+      return new Array(12).fill(255, 0, 12)
+        .concat(addr.toByteArray());
+      break;
+    case 'ipv6':
+      return addr.toByteArray();
+      break;
+    default:
+      throw new Error("Unrecognized ip address kind for " + ip + ": " + addr.kind());
+  }
 }

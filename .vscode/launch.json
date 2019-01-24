@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Debug Program",
       "program": "${workspaceFolder}/index.js",
-      "args": ["~/Downloads/nfdump6b.csv"]
+      "args": ["-f", "/Users/michael/Downloads/nfdump6b.csv", "--noOutput"]
     }
   ]
 }
