@@ -1,7 +1,7 @@
 CREATE TABLE netflow (
   start_time DateTime,
   end_time DateTime,
-  dur Decimal32(4),
+  dur UInt32,
   src_ip FixedString(16),
   src_port UInt16,
   dst_ip FixedString(16),
