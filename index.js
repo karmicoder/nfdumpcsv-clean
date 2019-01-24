@@ -2,7 +2,6 @@ const argv = require('yargs')
   .alias('f', 'file')
   .boolean('noOutput')
   .argv;
-const base64 = require('base64-js');
 const fs = require('fs');
 const ipaddr = require('ipaddr.js');
 const parser = require('csv-parse')();
