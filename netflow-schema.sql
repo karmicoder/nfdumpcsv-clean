@@ -11,8 +11,8 @@ CREATE TABLE netflow (
   bytes_in UInt64,
   packets_out UInt32,
   bytes_out UInt64,
-  src_ip_str String MATERIALIZED replaceRegexpOne(IPv6NumToString(src_ip), '^::ffff:', '')
-  dst_ip_str String MATERIALIZED replaceRegexpOne(IPv6NumToSTring(dst_ip), '^::ffff:', '')
+  src_ip_str String MATERIALIZED replaceRegexpOne(IPv6NumToString(src_ip), '^::ffff:', ''),
+  dst_ip_str String MATERIALIZED replaceRegexpOne(IPv6NumToString(dst_ip), '^::ffff:', '')
 ) ENGINE = MergeTree
 PARTITION BY start_time
 ORDER BY start_time
